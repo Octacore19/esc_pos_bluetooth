@@ -8,7 +8,6 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_bluetooth_basic/flutter_bluetooth_basic.dart';
 import './enums.dart';
@@ -18,8 +17,8 @@ class PrinterBluetooth {
   PrinterBluetooth(this._device);
   final BluetoothDevice _device;
 
-  String get name => _device.name;
-  String get address => _device.address;
+  String? get name => _device.name;
+  String? get address => _device.address;
   int get type => _device.type;
 }
 
@@ -28,9 +27,9 @@ class PrinterBluetoothManager {
   final BluetoothManager _bluetoothManager = BluetoothManager.instance;
   bool _isPrinting = false;
   bool _isConnected = false;
-  StreamSubscription _scanResultsSubscription;
-  StreamSubscription _isScanningSubscription;
-  PrinterBluetooth _selectedPrinter;
+  late StreamSubscription _scanResultsSubscription;
+  late StreamSubscription _isScanningSubscription;
+  late PrinterBluetooth _selectedPrinter;
 
   final BehaviorSubject<bool> _isScanning = BehaviorSubject.seeded(false);
   Stream<bool> get isScanningStream => _isScanning.stream;
