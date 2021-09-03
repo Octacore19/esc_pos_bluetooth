@@ -16,10 +16,13 @@ import './enums.dart';
 /// Bluetooth printer
 class PrinterBluetooth {
   PrinterBluetooth(this._device);
+
   final BluetoothDevice _device;
 
   String? get name => _device.name;
+
   String? get address => _device.address;
+
   int get type => _device.type;
 }
 
@@ -33,6 +36,7 @@ class PrinterBluetoothManager {
   PrinterBluetooth? _selectedPrinter;
 
   final BehaviorSubject<bool> _isScanning = BehaviorSubject.seeded(false);
+
   Stream<bool> get isScanningStream => _isScanning.stream;
 
   final BehaviorSubject<List<PrinterBluetooth>> _scanResults =
@@ -158,11 +162,11 @@ class PrinterBluetoothManager {
     );
   }*/
 
-  Future<PosPrintResult> printTicket(
-      List<int>? data, {
-        int chunkSizeBytes = 20,
-        int queueSleepTimeMs = 20,
-      }) async {
+  Future<PosPrintResult> printTicket({
+    List<int>? data,
+    int chunkSizeBytes = 20,
+    int queueSleepTimeMs = 20,
+  }) async {
     if (data == null || data.isEmpty) {
       return Future<PosPrintResult>.value(PosPrintResult.ticketEmpty);
     }
