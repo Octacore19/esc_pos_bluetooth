@@ -68,8 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // Print image
     final ByteData data = await rootBundle.load('assets/rabbit_black.jpg');
     final Uint8List bytes = data.buffer.asUint8List();
-    final Image image = decodeImage(bytes);
-    // ticket.image(image);
+    final Image image = decodeImage(bytes)!;
+    ticket.image(image);
 
     ticket.text('GROCERYLY',
         styles: PosStyles(

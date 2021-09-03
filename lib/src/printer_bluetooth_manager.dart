@@ -8,6 +8,7 @@
 
 import 'dart:async';
 import 'dart:io';
+import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter_bluetooth_basic/flutter_bluetooth_basic.dart';
 import './enums.dart';
@@ -29,13 +30,14 @@ class PrinterBluetoothManager {
   bool _isConnected = false;
   late StreamSubscription _scanResultsSubscription;
   late StreamSubscription _isScanningSubscription;
-  late PrinterBluetooth _selectedPrinter;
+  PrinterBluetooth? _selectedPrinter;
 
   final BehaviorSubject<bool> _isScanning = BehaviorSubject.seeded(false);
   Stream<bool> get isScanningStream => _isScanning.stream;
 
   final BehaviorSubject<List<PrinterBluetooth>> _scanResults =
       BehaviorSubject.seeded([]);
+
   Stream<List<PrinterBluetooth>> get scanResults => _scanResults.stream;
 
   Future _runDelayed(int seconds) {
@@ -93,7 +95,7 @@ class PrinterBluetoothManager {
     await _bluetoothManager.stopScan();
 
     // Connect
-    await _bluetoothManager.connect(_selectedPrinter._device);
+    await _bluetoothManager.connect(_selectedPrinter!._device);
 
     // Subscribe to the events
     _bluetoothManager.state.listen((state) async {
@@ -141,7 +143,7 @@ class PrinterBluetoothManager {
     return completer.future;
   }
 
-  Future<PosPrintResult> printTicket(
+  /*Future<PosPrintResult> printTicket(
     Ticket ticket, {
     int chunkSizeBytes = 20,
     int queueSleepTimeMs = 20,
@@ -151,6 +153,21 @@ class PrinterBluetoothManager {
     }
     return writeBytes(
       ticket.bytes,
+      chunkSizeBytes: chunkSizeBytes,
+      queueSleepTimeMs: queueSleepTimeMs,
+    );
+  }*/
+
+  Future<PosPrintResult> printTicket(
+      List<int>? data, {
+        int chunkSizeBytes = 20,
+        int queueSleepTimeMs = 20,
+      }) async {
+    if (data == null || data.isEmpty) {
+      return Future<PosPrintResult>.value(PosPrintResult.ticketEmpty);
+    }
+    return writeBytes(
+      data,
       chunkSizeBytes: chunkSizeBytes,
       queueSleepTimeMs: queueSleepTimeMs,
     );

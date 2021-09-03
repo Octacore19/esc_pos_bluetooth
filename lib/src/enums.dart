@@ -6,31 +6,49 @@
  * See LICENSE for distribution and usage details.
  */
 
-class PosPrintResult {
-  const PosPrintResult._internal(this.value);
-  final int value;
-  static const success = PosPrintResult._internal(1);
-  static const timeout = PosPrintResult._internal(2);
-  static const printerNotSelected = PosPrintResult._internal(3);
-  static const ticketEmpty = PosPrintResult._internal(4);
-  static const printInProgress = PosPrintResult._internal(5);
-  static const scanInProgress = PosPrintResult._internal(6);
+enum PosPrintResult {
+  success,
+  timeout,
+  printerNotSelected,
+  ticketEmpty,
+  printInProgress,
+  scanInProgress,
+}
+
+extension PosPrintResultExtension on PosPrintResult {
+  int get value {
+    switch (this) {
+      case PosPrintResult.success:
+        return 1;
+      case PosPrintResult.timeout:
+        return 2;
+      case PosPrintResult.printerNotSelected:
+        return 3;
+      case PosPrintResult.ticketEmpty:
+        return 4;
+      case PosPrintResult.printInProgress:
+        return 5;
+      case PosPrintResult.scanInProgress:
+        return 6;
+    }
+  }
 
   String get msg {
-    if (value == PosPrintResult.success.value) {
-      return 'Success';
-    } else if (value == PosPrintResult.timeout.value) {
-      return 'Error. Printer connection timeout';
-    } else if (value == PosPrintResult.printerNotSelected.value) {
-      return 'Error. Printer not selected';
-    } else if (value == PosPrintResult.ticketEmpty.value) {
-      return 'Error. Ticket is empty';
-    } else if (value == PosPrintResult.printInProgress.value) {
-      return 'Error. Another print in progress';
-    } else if (value == PosPrintResult.scanInProgress.value) {
-      return 'Error. Printer scanning in progress';
-    } else {
-      return 'Unknown error';
+    switch (this) {
+      case PosPrintResult.success:
+        return 'Success';
+      case PosPrintResult.timeout:
+        return 'Error. Printer connection timeout';
+      case PosPrintResult.printerNotSelected:
+        return 'Error. Printer not selected';
+      case PosPrintResult.ticketEmpty:
+        return 'Error. Ticket is empty';
+      case PosPrintResult.printInProgress:
+        return 'Error. Another print in progress';
+      case PosPrintResult.scanInProgress:
+        return 'Error. Printer scanning in progress';
+      default:
+        return 'Unknown error';
     }
   }
 }
